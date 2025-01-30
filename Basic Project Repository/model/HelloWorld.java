@@ -17,6 +17,7 @@ public class HelloWorld {
 	public void sayHello()
 	{
 		System.out.println("Hello Collin, Ryan and Steve");
+		System.out.println("You guys are the best, I am so glad to know you!");
 	}
 }
 
