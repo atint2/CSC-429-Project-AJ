@@ -5,3 +5,6 @@ This is for my first pull request
 
 You have successfully fetched my branch!
 You have successfully pulled my change!
+
+I am getting taught these by Ryan, Collin and Steve
+
