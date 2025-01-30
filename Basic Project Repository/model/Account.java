@@ -1,3 +1,4 @@
+// COPYRIGHT (c) 2025; Ryan Fanning, Collin Fanning, Steven Polvino, Sandeep Mitra
 // specify the package
 package model;
 
