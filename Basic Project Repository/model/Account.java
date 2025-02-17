@@ -33,7 +33,7 @@ public class Account extends EntityBase implements IView
 	// constructor for this class
 	//----------------------------------------------------------
 	public Account(String accountNumber)
-		throws InvalidPrimaryKeyException
+			throws InvalidPrimaryKeyException
 	{
 		super(myTableName);
 
@@ -51,7 +51,7 @@ public class Account extends EntityBase implements IView
 			if (size != 1)
 			{
 				throw new InvalidPrimaryKeyException("Multiple accounts matching id : "
-					+ accountNumber + " found.");
+						+ accountNumber + " found.");
 			}
 			else
 			{
@@ -78,7 +78,7 @@ public class Account extends EntityBase implements IView
 		else
 		{
 			throw new InvalidPrimaryKeyException("No account matching id : "
-				+ accountNumber + " found.");
+					+ accountNumber + " found.");
 		}
 	}
 
@@ -108,7 +108,7 @@ public class Account extends EntityBase implements IView
 	private void setDependencies()
 	{
 		dependencies = new Properties();
-	
+
 		myRegistry.setDependencies(dependencies);
 	}
 
@@ -215,7 +215,7 @@ public class Account extends EntityBase implements IView
 		persistentState.setProperty("ServiceCharge", value);
 		updateStateInDatabase();
 	}
-	
+
 	//-----------------------------------------------------------------------------------
 	public static int compare(Account a, Account b)
 	{
@@ -230,9 +230,9 @@ public class Account extends EntityBase implements IView
 	{
 		updateStateInDatabase();
 	}
-	
+
 	//-----------------------------------------------------------------------------------
-	private void updateStateInDatabase() 
+	private void updateStateInDatabase()
 	{
 		try
 		{
@@ -241,7 +241,7 @@ public class Account extends EntityBase implements IView
 				// update
 				Properties whereClause = new Properties();
 				whereClause.setProperty("AccountNumber",
-					persistentState.getProperty("AccountNumber"));
+						persistentState.getProperty("AccountNumber"));
 				updatePersistentState(mySchema, persistentState, whereClause);
 				updateStatusMessage = "Account data for account number : " + persistentState.getProperty("AccountNumber") + " updated successfully in database!";
 			}
@@ -249,10 +249,10 @@ public class Account extends EntityBase implements IView
 			{
 				// insert
 				Integer accountNumber =
-					insertAutoIncrementalPersistentState(mySchema, persistentState);
+						insertAutoIncrementalPersistentState(mySchema, persistentState);
 				persistentState.setProperty("AccountNumber", "" + accountNumber.intValue());
 				updateStatusMessage = "Account data for new account : " +  persistentState.getProperty("AccountNumber")
-					+ "installed successfully in database!";
+						+ "installed successfully in database!";
 			}
 		}
 		catch (SQLException ex)
@@ -289,4 +289,3 @@ public class Account extends EntityBase implements IView
 		}
 	}
 }
-
