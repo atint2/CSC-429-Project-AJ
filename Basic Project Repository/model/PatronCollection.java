@@ -31,7 +31,7 @@ public class PatronCollection extends EntityBase implements IView {
     }
 
     //-----------------------------------------------------------------------------------
-    private void processQuery(String query) throws InvalidPrimaryKeyException {
+    private void processQuery(String query, String errorMessage) throws InvalidPrimaryKeyException {
         Vector allDataRetrieved = getSelectQueryResult(query);
 
         if (allDataRetrieved != null)
@@ -51,7 +51,7 @@ public class PatronCollection extends EntityBase implements IView {
         }
         else
         {
-            throw new InvalidPrimaryKeyException("No patrons satisfying query");
+            throw new InvalidPrimaryKeyException(errorMessage);
         }
 
     }
@@ -99,29 +99,37 @@ public class PatronCollection extends EntityBase implements IView {
     //-----------------------------------------------------------------------------------
     public void findPatronsOlderThan(String date) throws InvalidPrimaryKeyException {
         String query = "SELECT * FROM " + myTableName + " WHERE (dateOfBirth < " + date + ")";
+        // Create error message for processQuery (if no patrons older than given date of birth are found)
+        String errorMessage = "No patrons older than given date of birth found.";
 
-        processQuery(query);
+        processQuery(query, errorMessage);
     }
 
     //-----------------------------------------------------------------------------------
     public void findPatronsYoungerThan(String date) throws InvalidPrimaryKeyException {
         String query = "SELECT * FROM " + myTableName + " WHERE (dateOfBirth > " + date + ")";
+        // Create error message for processQuery (if no patrons younger than given date of birth are found)
+        String errorMessage = "No patrons younger than given date of birth found.";
 
-        processQuery(query);
+        processQuery(query, errorMessage);
     }
 
     //-----------------------------------------------------------------------------------
     public void findPatronsAtZipCode(String zip) throws InvalidPrimaryKeyException {
         String query = "SELECT * FROM " + myTableName + " WHERE (zip = " + zip + ")" ;
+        // Create error message for processQuery (if no patrons with the given zip code are found)
+        String errorMessage = "No patrons with given zip code found.";
 
-        processQuery(query);
+        processQuery(query, errorMessage);
     }
 
     //-----------------------------------------------------------------------------------
     public void findPatronsWithNameLike(String name) throws InvalidPrimaryKeyException {
         String query = "SELECT * FROM " + myTableName + " WHERE name LIKE '%" + name + "%';";
+        // Create error message for processQuery (if no patrons with name similar to given name are found)
+        String errorMessage = "No patrons with name similar to given name found.";
 
-        processQuery(query);
+        processQuery(query, errorMessage);
     }
 
     //-----------------------------------------------------------------------------------

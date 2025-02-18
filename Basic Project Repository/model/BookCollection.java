@@ -31,7 +31,7 @@ public class BookCollection extends EntityBase implements IView {
     }
 
     //-----------------------------------------------------------------------------------
-    private void processQuery(String query) throws InvalidPrimaryKeyException {
+    private void processQuery(String query, String errorMessage) throws InvalidPrimaryKeyException {
         Vector allDataRetrieved = getSelectQueryResult(query);
 
         if (allDataRetrieved != null)
@@ -51,7 +51,7 @@ public class BookCollection extends EntityBase implements IView {
         }
         else
         {
-            throw new InvalidPrimaryKeyException("No books satisfying query");
+            throw new InvalidPrimaryKeyException(errorMessage);
         }
 
     }
@@ -99,29 +99,37 @@ public class BookCollection extends EntityBase implements IView {
     //-----------------------------------------------------------------------------------
     public void findBooksOlderThanDate(String year) throws InvalidPrimaryKeyException {
         String query = "SELECT * FROM " + myTableName + " WHERE (pubYear < " + year + ")";
+        // Create error message for processQuery (if no books older than given publication year are found)
+        String errorMessage = "No books older than given publication year found.";
 
-        processQuery(query);
+        processQuery(query, errorMessage);
     }
 
     //-----------------------------------------------------------------------------------
     public void findBooksNewerThanDate(String year) throws InvalidPrimaryKeyException {
         String query = "SELECT * FROM " + myTableName + " WHERE (pubYear > " + year + ")";
+        // Create error message for processQuery (if no books newer than given publication year are found)
+        String errorMessage = "No books newer than given publication year found.";
 
-        processQuery(query);
+        processQuery(query, errorMessage);
     }
 
     //-----------------------------------------------------------------------------------
     public void findBooksWithTitleLike(String title) throws InvalidPrimaryKeyException {
         String query = "SELECT * FROM " + myTableName + " WHERE bookTitle LIKE '%" + title + "%';";
+        // Create error message for processQuery (if no books with title like given title are found)
+        String errorMessage = "No books with title like given title found.";
 
-        processQuery(query);
+        processQuery(query, errorMessage);
     }
 
     //-----------------------------------------------------------------------------------
     public void findBooksWithAuthorLike(String author) throws InvalidPrimaryKeyException {
         String query = "SELECT * FROM " + myTableName + " WHERE author LIKE '%" + author + "%';";
+        // Create error message for processQuery (if no authors with name like given name are found)
+        String errorMessage = "No authors with name like given name found.";
 
-        processQuery(query);
+        processQuery(query, errorMessage);
     }
 
     //-----------------------------------------------------------------------------------
