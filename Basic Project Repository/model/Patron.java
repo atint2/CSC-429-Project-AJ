@@ -19,7 +19,7 @@ import userinterface.ViewFactory;
  *
  */
 public class Patron extends EntityBase implements IView {
-    private static final String myTableName = "Patron"; // used to talk to Book table
+    private static final String myTableName = "Patron"; // used to talk to Patron table
 
     protected Properties dependencies;
 
@@ -157,6 +157,18 @@ public class Patron extends EntityBase implements IView {
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
+
+    //-----------------------------------------------------------------------------------
+    @Override
+    public String toString() {
+        return "Patron Information:"
+                + "\nName: " + persistentState.getProperty("name")
+                + "\nEmail: " + persistentState.getProperty("email")
+                + "\nDOB: " + persistentState.getProperty("dateOfBirth");
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void display() { System.out.println(toString()); }
 
     //-----------------------------------------------------------------------------------
     protected void initializeSchema(String tableName) {

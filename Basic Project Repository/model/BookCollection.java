@@ -169,6 +169,19 @@ public class BookCollection extends EntityBase implements IView {
     }
 
     //-----------------------------------------------------------------------------------
+    @Override
+    public String toString() {
+        String booksInfo = "";
+        for (int i = 0; i < bookList.size(); i++) {
+            booksInfo += "\n\n" + bookList.get(i).toString();
+        }
+        return "Information About Books:" + booksInfo;
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void display() { System.out.println(toString()); }
+
+    //-----------------------------------------------------------------------------------
     protected void initializeSchema(String tableName) {
         if (mySchema == null) {
             mySchema = getSchemaInfo(tableName);

@@ -76,7 +76,7 @@ abstract public class Persistable
      * 'schema' of a table - namely, the column names and the types
      * of the columns
      *
-     * @param  String Table name to get schema information for
+     * @param  tableName Table name to get schema information for
      *
      * @return Properties object indicating column names as keys and column
      *         types as values
@@ -90,7 +90,7 @@ abstract public class Persistable
 		// Create a connection to the database
 		Connection theDBConnection = myBroker.getConnection();
 			
-		/* System.out.println("Persistable.getSchemaInfo(..) connection = " + theDBConnection); */
+		// DEBUG System.out.println("Persistable.getSchemaInfo(..) connection = " + theDBConnection);
 
 		// extract the metadata from the database
 		DatabaseMetaData dbMetaData = theDBConnection.getMetaData();

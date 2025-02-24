@@ -152,6 +152,18 @@ public class Book extends EntityBase implements IView {
     }
 
     //-----------------------------------------------------------------------------------
+    @Override
+    public String toString() {
+        return "Book Information:"
+                + "\nTitle: " + persistentState.getProperty("bookTitle")
+                + "\nAuthor: " + persistentState.getProperty("author")
+                + "\nPublication Date: " + persistentState.getProperty("pubYear");
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void display() { System.out.println(toString()); }
+
+    //-----------------------------------------------------------------------------------
     protected void initializeSchema(String tableName) {
         if (mySchema == null) {
             mySchema = getSchemaInfo(tableName);

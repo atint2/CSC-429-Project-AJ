@@ -55,12 +55,12 @@ public class JDBCBroker
 	//----------------------------------------------------------
 	static public JDBCBroker getInstance()
 	{
-		// DEBUG: System.out.println("JDBCBroker.getInstance()");
+		// DEBUG:System.out.println("JDBCBroker.getInstance()");
 		
 	        if(myInstance == null)
         	{
-			myInstance = new JDBCBroker();
-		}
+				myInstance = new JDBCBroker();
+			}
 
 		/* DEBUG
      		Enumeration e = DriverManager.getDrivers();
@@ -80,9 +80,9 @@ public class JDBCBroker
 	// private constructor for singleton
 	//----------------------------------------------------------
 	protected JDBCBroker()
-    	{
+	{
     		// DEBUG: System.out.println("JDBCBroker.JDBCBroker()");
-		props = new PropertyFile("dbConfig.ini");
+		props = new PropertyFile("Basic Project Repository/dbConfig.ini ");
 		if (props != null)
 		{
 			dbName = props.getProperty("dbName");
@@ -97,7 +97,17 @@ public class JDBCBroker
 			dbInstallationNameVal = props.getProperty("dbInstallation");
 			if (dbInstallationNameVal == null)
 				dbInstallationNameVal = "mariadb";
+			/* DEBUG String connectionString = "jdbc:" + dbInstallationNameVal +"://"+server+":3306/" +
+					dbName + "?" + "user=" + username + "&password=" +
+					password;
+			System.out.println("JDBCBroker.<init>: Attempting connection with connection string: "
+					+ connectionString); */
 			
+		}
+		else if (props == null)
+		{
+			System.out.println("FATAL ERROR: Could not find database configuration information");
+			return;
 		}
 		String driverClassName = dbClassNameVal;
 		try
@@ -105,7 +115,7 @@ public class JDBCBroker
 			// load and register the JDBC driver classes
 			theDriver = (Driver) Class.forName(driverClassName).newInstance();
 		} 
-			catch(ClassNotFoundException exc)
+		catch(ClassNotFoundException exc)
 		{
 			System.err.println("JDBCBroker.JDBCBroker - Could not load driver class: ClassNotFoundException");
 			new Event(Event.getLeafLevelClassName(this), "JDBCBroker", "Could not load driver class[" + driverClassName + "]", Event.ERROR);
@@ -126,19 +136,23 @@ public class JDBCBroker
 	//-------------------------------------------------------- 
 	public Connection getConnection() 
 	{	
-		//System.out.println("JDBCBroker.getConnection() with Driver " + theDriver);
+		// System.out.println("JDBCBroker.getConnection() with Driver " + theDriver);
 		if (myInstance != null)
 		{
+			// DEBUG System.out.println("JDBCBroker.getConnection(): myInstance is not null");
 			if(theDBConnection == null)
 			{
-				if ((dbName != null) & (username != null) && (password != null))
+				// DEBUG System.out.println("JDBCBroker.getConnection(): No db connection yet, trying to get one");
+				if ((dbName != null) && (username != null) && (password != null))
 				{
 					try
 					{
+						String connectionString = "jdbc:" + dbInstallationNameVal +"://"+server+":3306/" +
+								dbName + "?" + "user=" + username + "&password=" +
+								password;
+						// DEBUG System.out.println("JDBCBroker.getConnection(): Attempting connection with connection string: " + connectionString);
 						// Create a connection to the database
-						theDBConnection = theDriver.connect("jdbc:" + dbInstallationNameVal +"://"+server+":3306/" + 
-							dbName + "?" + "user=" + username + "&password=" +
-							password, null);					
+						theDBConnection = theDriver.connect(connectionString, null);
 					}
 					catch(SQLException exc)
 					{
@@ -146,10 +160,31 @@ public class JDBCBroker
 						//new Event(Event.getLeafLevelClassName(this), "getConnection", "Could not connect to database", Event.ERROR);
 					}     
 				}
+				else
+				{
+					System.out.println("JDBCBroker.getConnection(): Configuration file read, but information missing: Using hard-coded values");
+					dbName = "spr25_csc429_atint2";
+					username = "atint2";
+					password = "fkip!eIJ05v[sTIy";
+					server = "csdb.brockport.edu";
+					try {
+						String connectionString = "jdbc:" + dbInstallationNameVal + "://" + server + ":3306/" +
+								dbName + "?" + "user=" + username + "&password=" +
+								password;
+						// DEBUG System.out.println("JDBCBroker.getConnection(): Attempting connection with connection string: " + connectionString);
+						// Create a connection to the database
+						theDBConnection = theDriver.connect(connectionString, null);
+					}
+					catch(SQLException exc)
+					{
+						System.err.println("JDBCBroker.getConnection - Could not connect to database!" + "\n" + exc.getMessage());
+						//new Event(Event.getLeafLevelClassName(this), "getConnection", "Could not connect to database", Event.ERROR);
+					}
+				}
 			}   
 		}	
-		//System.out.println("JDBCBroker.getConnection() with connection " + theDBConnection);
-	       	return theDBConnection;
+		// DEBUG System.out.println("JDBCBroker.getConnection() with connection " + theDBConnection);
+		return theDBConnection;
     }
     
     

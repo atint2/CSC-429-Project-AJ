@@ -169,6 +169,19 @@ public class PatronCollection extends EntityBase implements IView {
     }
 
     //-----------------------------------------------------------------------------------
+    @Override
+    public String toString() {
+        String patronsInfo = "";
+        for (int i = 0; i < patronList.size(); i++) {
+            patronsInfo += "\n\n" + patronList.get(i).toString();
+        }
+        return "Information About Patrons:" + patronsInfo;
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void display() { System.out.println(toString()); }
+
+    //-----------------------------------------------------------------------------------
     protected void initializeSchema(String tableName) {
         if (mySchema == null) {
             mySchema = getSchemaInfo(tableName);
