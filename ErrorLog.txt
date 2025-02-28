@@ -1,1 +1,10 @@
 [2/6/25 6:19 PM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
+[2/26/25 11:51 AM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
+[2/26/25 11:54 AM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
+[2/27/25 12:28 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
+[2/27/25 12:35 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
+[2/27/25 12:36 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
+[2/27/25 12:41 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
+[2/27/25 12:43 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
+[2/27/25 12:46 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
+[2/27/25 1:03 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
