@@ -305,5 +305,8 @@ public class Librarian implements IView, IModel
 
 	}
 
+	public void createNewBook() {
+		Book newBook = new Book();
+	}
 }
 

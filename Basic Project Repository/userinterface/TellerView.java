@@ -3,7 +3,7 @@
 package userinterface;
 
 // system imports
-
+import java.text.NumberFormat;
 import java.util.Properties;
 
 import javafx.event.Event;
@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -24,32 +25,30 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 // project imports
 import impresario.IModel;
-import model.Librarian;
 
-/**
- * The class containing the Librarian View  for the Library application
- */
+/** The class containing the Teller View  for the ATM application */
 //==============================================================
-public class LibrarianView extends View {
+public class TellerView extends View
+{
 
     // GUI stuff
-    private Button insertBookButton;
-    private Button insertPatronButton;
-    private Button searchBooksButton;
-    private Button searchPatronsButton;
-    private Button doneButton;
+    private TextField userid;
+    private PasswordField password;
+    private Button submitButton;
 
     // For showing error message
     private MessageView statusLog;
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public LibrarianView(IModel librarian) {
+    public TellerView( IModel teller)
+    {
 
-        super(librarian, "LibrarianView");
+        super(teller, "TellerView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -67,18 +66,21 @@ public class LibrarianView extends View {
 
         getChildren().add(container);
 
+        populateFields();
+
         // STEP 0: Be sure you tell your model what keys you are interested in
         myModel.subscribe("LoginError", this);
     }
 
     // Create the label (Text) for the title of the screen
     //-------------------------------------------------------------
-    private Node createTitle() {
+    private Node createTitle()
+    {
 
-        Text titleText = new Text("       LIBRARY SYSTEM          ");
-        titleText.setFont(Font.font("Garamond", FontWeight.BOLD, 25));
+        Text titleText = new Text("       Brockport Bank ATM          ");
+        titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
-        titleText.setFill(Color.BLACK);
+        titleText.setFill(Color.DARKGREEN);
 
 
         return titleText;
@@ -86,107 +88,129 @@ public class LibrarianView extends View {
 
     // Create the main form contents
     //-------------------------------------------------------------
-    private GridPane createFormContents() {
+    private GridPane createFormContents()
+    {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(50, 50, 50, 50));
+        grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Font myFont = Font.font("Garamond", FontWeight.NORMAL, 15);
+        // data entry fields
+        Label userName = new Label("User ID:");
+        grid.add(userName, 0, 0);
 
-        insertBookButton = new Button("INSERT NEW BOOK");
-        insertBookButton.setFont(myFont);
-        insertBookButton.setTextAlignment(TextAlignment.CENTER);
-        insertBookButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                processInsertBook(e);
-            }
-        });
-        grid.add(insertBookButton, 1, 0);
+        userid = new TextField();
+        userid.setOnAction(new EventHandler<ActionEvent>() {
 
-        insertPatronButton = new Button("INSERT NEW PATRON");
-        insertPatronButton.setFont(myFont);
-        insertPatronButton.setTextAlignment(TextAlignment.CENTER);
-        insertPatronButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(insertPatronButton, 1, 1);
+        grid.add(userid, 1, 0);
 
-        searchBooksButton = new Button("SEARCH BOOKS");
-        searchBooksButton.setFont(myFont);
-        searchBooksButton.setTextAlignment(TextAlignment.CENTER);
-        searchBooksButton.setOnAction(new EventHandler<ActionEvent>() {
+        Label pw = new Label("Password:");
+        grid.add(pw, 0, 1);
+
+        password = new PasswordField();
+        password.setOnAction(new EventHandler<ActionEvent>() {
+
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(searchBooksButton, 1, 2);
+        grid.add(password, 1, 1);
 
-        searchPatronsButton = new Button("SEARCH PATRONS");
-        searchPatronsButton.setFont(myFont);
-        searchPatronsButton.setTextAlignment(TextAlignment.CENTER);
-        searchPatronsButton.setOnAction(new EventHandler<ActionEvent>() {
+        submitButton = new Button("Submit");
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(searchPatronsButton, 1, 3);
 
-        doneButton = new Button("DONE");
-        doneButton.setFont(myFont);
-        doneButton.setTextAlignment(TextAlignment.CENTER);
-        doneButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(doneButton, 1, 4);
+        HBox btnContainer = new HBox(10);
+        btnContainer.setAlignment(Pos.BOTTOM_RIGHT);
+        btnContainer.getChildren().add(submitButton);
+        grid.add(btnContainer, 1, 3);
 
         return grid;
     }
 
 
+
     // Create the status log field
     //-------------------------------------------------------------
-    private MessageView createStatusLog(String initialMessage) {
+    private MessageView createStatusLog(String initialMessage)
+    {
 
         statusLog = new MessageView(initialMessage);
 
         return statusLog;
     }
 
-    public void processInsertBook(Event evt) {
-        // DEBUG System.out.println("LibrarianView.actionPerformed()");
-        clearErrorMessage();
-
-        Librarian myLibrarian = new Librarian();
-
-        myLibrarian.createNewBook();
+    //-------------------------------------------------------------
+    public void populateFields()
+    {
+        userid.setText("");
+        password.setText("");
     }
+
     // This method processes events generated from our GUI components.
     // Make the ActionListeners delegate to this method
     //-------------------------------------------------------------
-    public void processAction(Event evt) {
-        // DEBUG: System.out.println("LibrarianView.actionPerformed()");
+    public void processAction(Event evt)
+    {
+        // DEBUG: System.out.println("TellerView.actionPerformed()");
 
         clearErrorMessage();
+
+        String useridEntered = userid.getText();
+
+        if ((useridEntered == null) || (useridEntered.length() == 0))
+        {
+            displayErrorMessage("Please enter a user id!");
+            userid.requestFocus();
+        }
+        else
+        {
+            String passwordEntered = password.getText();
+            processUserIDAndPassword(useridEntered, passwordEntered);
+        }
+
+    }
+
+    /**
+     * Process userid and pwd supplied when Submit button is hit.
+     * Action is to pass this info on to the teller object
+     */
+    //----------------------------------------------------------
+    private void processUserIDAndPassword(String useridString,
+                                          String passwordString)
+    {
+        Properties props = new Properties();
+        props.setProperty("ID", useridString);
+        props.setProperty("Password", passwordString);
+
+        // clear fields for next time around
+        userid.setText("");
+        password.setText("");
+
+        myModel.stateChangeRequest("Login", props);
     }
 
     //---------------------------------------------------------
-    public void updateState(String key, Object value) {
+    public void updateState(String key, Object value)
+    {
         // STEP 6: Be sure to finish the end of the 'perturbation'
         // by indicating how the view state gets updated.
-        if (key.equals("LoginError") == true) {
+        if (key.equals("LoginError") == true)
+        {
             // display the passed text
-            displayErrorMessage((String) value);
+            displayErrorMessage((String)value);
         }
 
     }
@@ -195,7 +219,8 @@ public class LibrarianView extends View {
      * Display error message
      */
     //----------------------------------------------------------
-    public void displayErrorMessage(String message) {
+    public void displayErrorMessage(String message)
+    {
         statusLog.displayErrorMessage(message);
     }
 
@@ -203,9 +228,9 @@ public class LibrarianView extends View {
      * Clear error message
      */
     //----------------------------------------------------------
-    public void clearErrorMessage() {
+    public void clearErrorMessage()
+    {
         statusLog.clearErrorMessage();
     }
 
 }
-

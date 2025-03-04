@@ -25,7 +25,7 @@ public class DatabaseTester {
                 System.out.println("Error: Invalid option");
         }
 
-       /* System.out.println("\nEnter part of a title of a book: ");
+        System.out.println("\nEnter part of a title of a book: ");
         String bookTitle = input.nextLine();
         System.out.println("Finding books with title like : " + bookTitle);
         printBooksWithTitleLike(bookTitle);
@@ -33,7 +33,7 @@ public class DatabaseTester {
         System.out.println("\nEnter a year to find books published before it: ");
         String booksOlderThan = input.nextLine();
         System.out.println("Finding books published before : " + booksOlderThan);
-        printBooksOlderThanDate(booksOlderThan); */
+        printBooksOlderThanDate(booksOlderThan);
 
         System.out.println("\nEnter a date to find patrons younger than it (YYYY-MM-DD): ");
         String patronsyoungerThan = input.nextLine();

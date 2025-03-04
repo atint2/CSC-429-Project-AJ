@@ -90,6 +90,15 @@ public class Book extends EntityBase implements IView {
         }
     }
 
+    public Book() {
+        super(myTableName);
+
+        setDependencies();
+
+        // Create new empty Properties object
+        persistentState = new Properties();
+    }
+
     //-----------------------------------------------------------------------------------
     private void setDependencies() {
         dependencies = new Properties();
