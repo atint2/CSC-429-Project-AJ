@@ -74,14 +74,17 @@ public class LibrarianView extends View {
     // Create the label (Text) for the title of the screen
     //-------------------------------------------------------------
     private Node createTitle() {
+        HBox container = new HBox();
+        container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text("       LIBRARY SYSTEM          ");
+        Text titleText = new Text(" LIBRARY SYSTEM ");
         titleText.setFont(Font.font("Garamond", FontWeight.BOLD, 25));
+        titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.BLACK);
+        container.getChildren().add(titleText);
 
-
-        return titleText;
+        return container;
     }
 
     // Create the main form contents
@@ -91,7 +94,7 @@ public class LibrarianView extends View {
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(50, 50, 50, 50));
+        grid.setPadding(new Insets(25, 25, 25, 25));
 
         Font myFont = Font.font("Garamond", FontWeight.NORMAL, 15);
 
@@ -101,7 +104,7 @@ public class LibrarianView extends View {
         insertBookButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                processInsertBook(e);
+                processAction(e);
             }
         });
         grid.add(insertBookButton, 1, 0);
@@ -145,7 +148,7 @@ public class LibrarianView extends View {
         doneButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                processAction(e);
+                System.exit(0);
             }
         });
         grid.add(doneButton, 1, 4);
@@ -163,21 +166,30 @@ public class LibrarianView extends View {
         return statusLog;
     }
 
-    public void processInsertBook(Event evt) {
-        // DEBUG System.out.println("LibrarianView.actionPerformed()");
-        clearErrorMessage();
-
-        Librarian myLibrarian = new Librarian();
-
-        myLibrarian.createNewBook();
-    }
     // This method processes events generated from our GUI components.
     // Make the ActionListeners delegate to this method
     //-------------------------------------------------------------
     public void processAction(Event evt) {
-        // DEBUG: System.out.println("LibrarianView.actionPerformed()");
-
+        // DEBUG System.out.println("LibrarianView.actionPerformed()");
         clearErrorMessage();
+        if (evt.getSource().toString().contains("INSERT NEW BOOK"))
+        {
+            Librarian myLibrarian = new Librarian();
+
+            myLibrarian.createNewBook();
+        }
+        else if (evt.getSource().toString().contains("INSERT NEW PATRON"))
+        {
+
+        }
+        else if (evt.getSource().toString().contains("SEARCH BOOKS"))
+        {
+
+        }
+        else if (evt.getSource().toString().contains("SEARCH PATRONS"))
+        {
+
+        }
     }
 
     //---------------------------------------------------------

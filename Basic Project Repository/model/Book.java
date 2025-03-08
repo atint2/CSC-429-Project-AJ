@@ -99,6 +99,20 @@ public class Book extends EntityBase implements IView {
         persistentState = new Properties();
     }
 
+    public void processNewBook(Properties props) {
+        Enumeration allKeys = props.propertyNames();
+        // Store keys and their values in database
+        while (allKeys.hasMoreElements() == true) {
+            String nextKey = (String) allKeys.nextElement();
+            String nextValue = props.getProperty(nextKey);
+
+            if (nextValue != null) {
+                persistentState.setProperty(nextKey, nextValue);
+            }
+        }
+        this.save();
+    }
+
     //-----------------------------------------------------------------------------------
     private void setDependencies() {
         dependencies = new Properties();

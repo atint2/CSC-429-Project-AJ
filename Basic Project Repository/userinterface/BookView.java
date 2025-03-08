@@ -24,6 +24,7 @@ import java.util.Properties;
 
 // project imports
 import impresario.IModel;
+import model.Book;
 
 /**
  * The class containing the Book View  for the Library application
@@ -36,7 +37,7 @@ public class BookView extends View {
     protected TextField bookTitle;
     protected TextField pubYear;
 
-    protected ComboBox<Text> status;
+    protected ComboBox<String> status;
 
     protected Button submitButton;
     protected Button doneButton;
@@ -63,18 +64,25 @@ public class BookView extends View {
 
         getChildren().add(container);
 
-        myModel.subscribe("UpdateStatusMessage", this);
+        populateFields();
+
+        myModel.subscribe("InsertBookError", this);
     }
 
     // Create the title container
     //-------------------------------------------------------------
     private Node createTitle() {
-        Text titleText = new Text("       LIBRARY SYSTEM          ");
+        HBox container = new HBox();
+        container.setAlignment(Pos.CENTER);
+
+        Text titleText = new Text(" LIBRARY SYSTEM ");
         titleText.setFont(Font.font("Garamond", FontWeight.BOLD, 25));
+        titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.BLACK);
+        container.getChildren().add(titleText);
 
-        return titleText;
+        return container;
     }
 
     // Create the main form content
@@ -88,11 +96,11 @@ public class BookView extends View {
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Font myFont = Font.font("Garamond", FontWeight.NORMAL, 12);
+        Font myFont = Font.font("Garamond", FontWeight.NORMAL, 15);
 
         Text prompt = new Text("BOOK INFORMATION");
         prompt.setWrappingWidth(400);
-        prompt.setFont(Font.font("Garamond", FontWeight.BOLD, 15));
+        prompt.setFont(Font.font("Garamond", FontWeight.BOLD, 17));
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
@@ -104,7 +112,6 @@ public class BookView extends View {
         grid.add(authorLabel, 0, 1);
 
         author = new TextField();
-        author.setEditable(true);
         grid.add(author, 1, 1);
 
         Text bookTitleLabel = new Text(" Title : ");
@@ -127,8 +134,18 @@ public class BookView extends View {
         pubYear.setEditable(true);
         grid.add(pubYear, 1, 3);
 
+        Text statusLabel = new Text(" Status : ");
+        statusLabel.setFont(myFont);
+        statusLabel.setWrappingWidth(150);
+        statusLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(statusLabel, 0, 4);
+
+        status = new ComboBox<String>();
+        status.setEditable(true);
+        grid.add(status, 1, 4);
+
         HBox doneCont = new HBox(10);
-        doneCont.setAlignment(Pos.CENTER);
+        doneCont.setAlignment(Pos.BOTTOM_RIGHT);
 
         submitButton = new Button("Submit");
         submitButton.setFont(myFont);
@@ -136,6 +153,7 @@ public class BookView extends View {
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
+                processAction(e);
             }
         });
         doneCont.getChildren().add(submitButton);
@@ -146,6 +164,7 @@ public class BookView extends View {
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
+                myModel.stateChangeRequest("DoneInsertingBook", null);
             }
         });
         doneCont.getChildren().add(doneButton);
@@ -154,6 +173,44 @@ public class BookView extends View {
         vbox.getChildren().add(doneCont);
 
         return vbox;
+
+    }
+
+    public void populateFields() {
+
+        status.getItems().addAll("Active", "Inactive");
+        status.setValue("Active");
+    }
+
+    public void processAction(Event evt) {
+        // DEBUG: System.out.println("BookView.actionPerformed()");
+
+        clearErrorMessage();
+
+        String authorEntered = author.getText();
+        String bookTitleEntered = bookTitle.getText();
+        String pubYearEntered = pubYear.getText();
+
+        if (authorEntered == null || authorEntered.length() == 0) {
+            displayErrorMessage("Please enter an author!");
+            author.requestFocus();
+        } else if (bookTitleEntered == null || bookTitleEntered.length() == 0) {
+            displayErrorMessage("Please enter a book title!");
+            bookTitle.requestFocus();
+        } else if (pubYearEntered == null || pubYearEntered.length() == 0) {
+            displayErrorMessage("Please enter a publication year!");
+            pubYear.requestFocus();
+        } else if (Integer.parseInt(pubYearEntered) < 1800 || Integer.parseInt(pubYearEntered) > 2024) {
+            displayErrorMessage("Publication year must be between 1800 and 2024");
+            pubYear.requestFocus();
+        } else {
+            Book newBook = new Book();
+            Properties bookInfo = new Properties();
+            bookInfo.setProperty("author", authorEntered);
+            bookInfo.setProperty("bookTitle", bookTitleEntered);
+            bookInfo.setProperty("pubYear", pubYearEntered);
+            newBook.processNewBook(bookInfo);
+        }
     }
 
     public void updateState(String key, Object value) {
@@ -164,16 +221,22 @@ public class BookView extends View {
     //-------------------------------------------------------------
     protected MessageView createStatusLog(String initialMessage) {
         statusLog = new MessageView(initialMessage);
-
         return statusLog;
+    }
+
+    /**
+     * Display error message
+     */
+    //----------------------------------------------------------
+    public void displayErrorMessage(String message) {
+        statusLog.displayErrorMessage(message);
     }
 
     /**
      * Clear error message
      */
     //----------------------------------------------------------
-    public void clearErrorMessage()
-    {
+    public void clearErrorMessage() {
         statusLog.clearErrorMessage();
     }
 

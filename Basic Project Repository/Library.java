@@ -61,9 +61,9 @@ public class Library extends Application
 	   // 'X' IN THE WINDOW), and show it.
            mainStage.setOnCloseRequest(new EventHandler <javafx.stage.WindowEvent>() {
             @Override
-            public void handle(javafx.stage.WindowEvent event) {
-                System.exit(0);
-            }
+			   public void handle(javafx.stage.WindowEvent event) {
+				   System.exit(0);
+			   }
            });
 
            try
