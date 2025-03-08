@@ -92,6 +92,33 @@ public class Patron extends EntityBase implements IView {
         }
     }
 
+    /* Parameter-less constructor
+     * Initializes empty Properties object
+     */
+    public Patron() {
+        super(myTableName);
+
+        setDependencies();
+
+        // Create new empty Properties object
+        persistentState = new Properties();
+    }
+
+    //-----------------------------------------------------------------------------------
+    public void processNewPatron(Properties props) {
+        Enumeration allKeys = props.propertyNames();
+        // Store keys and their values in database
+        while (allKeys.hasMoreElements() == true) {
+            String nextKey = (String) allKeys.nextElement();
+            String nextValue = props.getProperty(nextKey);
+
+            if (nextValue != null) {
+                persistentState.setProperty(nextKey, nextValue);
+            }
+        }
+        this.save();
+    }
+
     //-----------------------------------------------------------------------------------
     private void setDependencies() {
         dependencies = new Properties();

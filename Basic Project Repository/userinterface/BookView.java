@@ -27,7 +27,7 @@ import impresario.IModel;
 import model.Book;
 
 /**
- * The class containing the Book View  for the Library application
+ * The class containing the InsertBook View  for the Library application
  */
 //==============================================================
 public class BookView extends View {
@@ -164,7 +164,7 @@ public class BookView extends View {
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("DoneInsertingBook", null);
+                myModel.stateChangeRequest("Done", null);
             }
         });
         doneCont.getChildren().add(doneButton);
@@ -200,8 +200,8 @@ public class BookView extends View {
         } else if (pubYearEntered == null || pubYearEntered.length() == 0) {
             displayErrorMessage("Please enter a publication year!");
             pubYear.requestFocus();
-        } else if (Integer.parseInt(pubYearEntered) < 1800 || Integer.parseInt(pubYearEntered) > 2024) {
-            displayErrorMessage("Publication year must be between 1800 and 2024");
+        } else if (Integer.parseInt(pubYearEntered) < 1800 || Integer.parseInt(pubYearEntered) > 2025) {
+            displayErrorMessage("Publication year must be between 1800 and 2025");
             pubYear.requestFocus();
         } else {
             Book newBook = new Book();

@@ -90,6 +90,9 @@ public class Book extends EntityBase implements IView {
         }
     }
 
+    /* Parameter-less constructor
+     * Initializes empty Properties object
+     */
     public Book() {
         super(myTableName);
 
@@ -99,6 +102,7 @@ public class Book extends EntityBase implements IView {
         persistentState = new Properties();
     }
 
+    //-----------------------------------------------------------------------------------
     public void processNewBook(Properties props) {
         Enumeration allKeys = props.propertyNames();
         // Store keys and their values in database

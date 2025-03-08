@@ -180,7 +180,9 @@ public class LibrarianView extends View {
         }
         else if (evt.getSource().toString().contains("INSERT NEW PATRON"))
         {
+            Librarian myLibrarian = new Librarian();
 
+            myLibrarian.createNewPatron();
         }
         else if (evt.getSource().toString().contains("SEARCH BOOKS"))
         {

@@ -68,12 +68,6 @@ public class Librarian implements IView, IModel
     //-----------------------------------------------------------------------------------
     private void setDependencies() {
         dependencies = new Properties();
-        dependencies.setProperty("Login", "LoginError");
-        dependencies.setProperty("Deposit", "TransactionError");
-        dependencies.setProperty("Withdraw", "TransactionError");
-        dependencies.setProperty("Transfer", "TransactionError");
-        dependencies.setProperty("BalanceInquiry", "TransactionError");
-        dependencies.setProperty("ImposeServiceCharge", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -87,17 +81,7 @@ public class Librarian implements IView, IModel
      */
     //----------------------------------------------------------
     public Object getState(String key) {
-        if (key.equals("LoginError") == true) {
-            return loginErrorMessage;
-        } else if (key.equals("TransactionError") == true) {
-            return transactionErrorMessage;
-        } else if (key.equals("Name") == true) {
-            if (myAccountHolder != null) {
-                return myAccountHolder.getState("Name");
-            } else
-                return "Undefined";
-        } else
-            return "";
+        return "";
     }
 
     //----------------------------------------------------------------
@@ -108,12 +92,13 @@ public class Librarian implements IView, IModel
 
         if (key.equals("InsertBook") == true) {
             createAndShowInsertBookView();
-        } else if (key.equals("DoneInsertingBook") == true) {
+        } else if (key.equals("Done") == true) {
             myViews.remove("BookView");
 
             createAndShowLibrarianView();
+        } else if (key.equals("InsertPatron") == true) {
+            createAndShowInsertPatronView();
         }
-
 
         myRegistry.updateSubscribers(key, this);
     }
@@ -124,51 +109,17 @@ public class Librarian implements IView, IModel
     //----------------------------------------------------------
     public void updateState(String key, Object value) {
         // DEBUG System.out.println("Teller.updateState: key: " + key);
-
         stateChangeRequest(key, value);
-    }
-
-    /**
-     * Create a Transaction depending on the Transaction type (deposit,
-     * withdraw, transfer, etc.). Use the AccountHolder holder data to do the
-     * create.
-     */
-    //----------------------------------------------------------
-    public void doTransaction(String transactionType) {
-        try {
-            Transaction trans = TransactionFactory.createTransaction(
-                    transactionType, myAccountHolder);
-
-            trans.subscribe("CancelTransaction", this);
-            trans.stateChangeRequest("DoYourJob", "");
-        } catch (Exception ex) {
-            transactionErrorMessage = "FATAL ERROR: TRANSACTION FAILURE: Unrecognized transaction!!";
-            new Event(Event.getLeafLevelClassName(this), "createTransaction",
-                    "Transaction Creation Failure: Unrecognized transaction " + ex.toString(),
-                    Event.ERROR);
-        }
-    }
-
-    //----------------------------------------------------------
-    private void createAndShowTransactionChoiceView() {
-        Scene currentScene = (Scene) myViews.get("TransactionChoiceView");
-
-        if (currentScene == null) {
-            // create our initial view
-            View newView = ViewFactory.createView("TransactionChoiceView", this); // USE VIEW FACTORY
-            currentScene = new Scene(newView);
-            myViews.put("TransactionChoiceView", currentScene);
-        }
-
-
-        // make the view visible by installing it into the frame
-        swapToView(currentScene);
-
     }
 
     public void createNewBook() {
         Book newBook = new Book();
         updateState("InsertBook", null);
+    }
+
+    public void createNewPatron() {
+        Patron newPatron = new Patron();
+        updateState("InsertPatron", null);
     }
 
     //------------------------------------------------------------
@@ -180,6 +131,22 @@ public class Librarian implements IView, IModel
             View newView = ViewFactory.createView("BookView", this); // USE VIEW FACTORY
             currentScene = new Scene(newView);
             myViews.put("BookView", currentScene);
+        }
+
+        // make the view visible by installing it into the frame
+        swapToView(currentScene);
+
+    }
+
+    //------------------------------------------------------------
+    private void createAndShowInsertPatronView() {
+        Scene currentScene = (Scene) myViews.get("PatronView");
+
+        if (currentScene == null) {
+            // create our initial view
+            View newView = ViewFactory.createView("PatronView", this); // USE VIEW FACTORY
+            currentScene = new Scene(newView);
+            myViews.put("PatronView", currentScene);
         }
 
         // make the view visible by installing it into the frame
