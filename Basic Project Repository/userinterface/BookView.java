@@ -177,7 +177,9 @@ public class BookView extends View {
     }
 
     public void populateFields() {
-
+        author.setText("");
+        bookTitle.setText("");
+        pubYear.setText("");
         status.getItems().addAll("Active", "Inactive");
         status.setValue("Active");
     }
@@ -210,6 +212,9 @@ public class BookView extends View {
             bookInfo.setProperty("bookTitle", bookTitleEntered);
             bookInfo.setProperty("pubYear", pubYearEntered);
             newBook.processNewBook(bookInfo);
+
+            displaySuccessMessage("Book successfully entered into the database");
+            populateFields();
         }
     }
 
@@ -222,6 +227,14 @@ public class BookView extends View {
     protected MessageView createStatusLog(String initialMessage) {
         statusLog = new MessageView(initialMessage);
         return statusLog;
+    }
+
+    /**
+     * Display success message
+     */
+    //----------------------------------------------------------
+    public void displaySuccessMessage(String message) {
+        statusLog.displaySuccessMessage(message);
     }
 
     /**

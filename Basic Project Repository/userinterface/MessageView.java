@@ -60,6 +60,17 @@ public class MessageView extends Text
 	}
 
 	/**
+	 * Display success message
+	 */
+	//----------------------------------------------------------
+	public void displaySuccessMessage(String message)
+	{
+		// display the passed text in blue
+		setFill(Color.GREEN);
+		setText(message);
+	}
+
+	/**
 	 * Display error message
 	 */
 	//----------------------------------------------------------

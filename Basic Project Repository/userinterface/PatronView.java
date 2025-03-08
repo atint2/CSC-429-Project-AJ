@@ -203,7 +203,13 @@ public class PatronView extends View {
     }
 
     public void populateFields() {
-
+        name.setText("");
+        address.setText("");
+        city.setText("");
+        stateCode.setText("");
+        zip.setText("");
+        email.setText("");
+        dateOfBirth.setText("");
     }
 
     public void processAction(Event evt) {
@@ -255,6 +261,9 @@ public class PatronView extends View {
             patronInfo.setProperty("email", emailEntered);
             patronInfo.setProperty("dateOfBirth", dateOfBirthEntered);
             newPatron.processNewPatron(patronInfo);
+
+            displaySuccessMessage("Patron successfully entered into the database");
+            populateFields();
         }
     }
 
@@ -267,6 +276,14 @@ public class PatronView extends View {
     protected MessageView createStatusLog(String initialMessage) {
         statusLog = new MessageView(initialMessage);
         return statusLog;
+    }
+
+    /**
+     * Display success message
+     */
+    //----------------------------------------------------------
+    public void displaySuccessMessage(String message) {
+        statusLog.displaySuccessMessage(message);
     }
 
     /**
