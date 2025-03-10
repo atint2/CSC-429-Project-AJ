@@ -9,3 +9,7 @@
 [2/27/25 12:46 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
 [2/27/25 1:03 PM]|Library|Library.<init>|Error|NOTAG|null<Unable to create Librarian object>
 [2/28/25 7:01 PM]|ATM|ATM.<init>|Error|NOTAG|null<Unable to create Teller object>
+[3/8/25 6:37 PM]|Patron|getSchemaInfo|Error|NOTAG|null<SQL Exception: -1: (conn=6663) Socket error>
+[3/8/25 6:39 PM]|Patron|getSchemaInfo|Error|NOTAG|null<SQL Exception: 1220: (conn=6663) Connection is closed>
+[3/8/25 6:40 PM]|Patron|getSchemaInfo|Error|NOTAG|null<SQL Exception: 1220: (conn=6663) Connection is closed>
+[3/8/25 6:41 PM]|Patron|getSchemaInfo|Error|NOTAG|null<SQL Exception: 1220: (conn=6663) Connection is closed>

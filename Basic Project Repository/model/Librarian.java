@@ -98,6 +98,10 @@ public class Librarian implements IView, IModel
             createAndShowLibrarianView();
         } else if (key.equals("InsertPatron") == true) {
             createAndShowInsertPatronView();
+        } else if (key.equals("SearchBook") == true) {
+            createAndShowSearchBookView();
+        } else if (key.equals("SearchPatron") == true) {
+            createAndShowSearchPatronView();
         }
 
         myRegistry.updateSubscribers(key, this);
@@ -135,7 +139,6 @@ public class Librarian implements IView, IModel
 
         // make the view visible by installing it into the frame
         swapToView(currentScene);
-
     }
 
     //------------------------------------------------------------
@@ -151,7 +154,36 @@ public class Librarian implements IView, IModel
 
         // make the view visible by installing it into the frame
         swapToView(currentScene);
+    }
 
+    //------------------------------------------------------------
+    private void createAndShowSearchBookView() {
+        Scene currentScene = (Scene) myViews.get("SearchBookView");
+
+        if (currentScene == null) {
+            // create our initial view
+            View newView = ViewFactory.createView("SearchBookView", this); // USE VIEW FACTORY
+            currentScene = new Scene(newView);
+            myViews.put("SearchBookView", currentScene);
+        }
+
+        // make the view visible by installing it into the frame
+        swapToView(currentScene);
+    }
+
+    //------------------------------------------------------------
+    private void createAndShowSearchPatronView() {
+        Scene currentScene = (Scene) myViews.get("SearchPatronView");
+
+        if (currentScene == null) {
+            // create our initial view
+            View newView = ViewFactory.createView("SearchPatronView", this); // USE VIEW FACTORY
+            currentScene = new Scene(newView);
+            myViews.put("SearchPatronView", currentScene);
+        }
+
+        // make the view visible by installing it into the frame
+        swapToView(currentScene);
     }
 
     //------------------------------------------------------------
@@ -166,7 +198,6 @@ public class Librarian implements IView, IModel
         }
 
         swapToView(currentScene);
-
     }
 
 

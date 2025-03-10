@@ -2,14 +2,15 @@ package userinterface;
 
 // system imports
 
-import javafx.event.Event;
+import impresario.IModel;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -18,14 +19,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
+import model.Patron;
 
 import java.util.Properties;
-
-// project imports
-import impresario.IModel;
-import model.Book;
-import model.Patron;
 
 /**
  * The class containing the InsertPatron View  for the Library application
@@ -45,7 +41,7 @@ public class PatronView extends View {
     protected Button submitButton;
     protected Button doneButton;
 
-    // For showing error message
+    // For showing error/success message
     protected MessageView statusLog;
 
     // constructor for this class -- takes a model object
@@ -202,6 +198,7 @@ public class PatronView extends View {
         return vbox;
     }
 
+    //-------------------------------------------------------------
     public void populateFields() {
         name.setText("");
         address.setText("");
@@ -212,6 +209,7 @@ public class PatronView extends View {
         dateOfBirth.setText("");
     }
 
+    //-------------------------------------------------------------
     public void processAction(Event evt) {
         // DEBUG: System.out.println("PatronView.actionPerformed()");
 
@@ -246,8 +244,7 @@ public class PatronView extends View {
         } else if (dateOfBirthEntered == null || dateOfBirthEntered.length() == 0) {
             displayErrorMessage("Please enter a date of birth!");
             email.requestFocus();
-        }
-        else if (dateOfBirthEntered.compareTo("1920-01-01") < 0 || dateOfBirthEntered.compareTo("2007-01-01") > 0) {
+        } else if (dateOfBirthEntered.compareTo("1920-01-01") < 0 || dateOfBirthEntered.compareTo("2007-01-01") > 0) {
             displayErrorMessage("Date of birth must be between 1920-01-01 and 2007-01-01");
             dateOfBirth.requestFocus();
         } else {
@@ -267,6 +264,7 @@ public class PatronView extends View {
         }
     }
 
+    //-------------------------------------------------------------
     public void updateState(String key, Object value) {
 
     }

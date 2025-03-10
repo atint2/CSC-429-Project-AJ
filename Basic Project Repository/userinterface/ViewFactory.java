@@ -69,6 +69,14 @@ public class ViewFactory {
 		else if (viewName.equals("PatronView") == true) {
 			return new PatronView(model);
 		}
+		else if (viewName.equals("SearchBookView") == true)
+		{
+			return new SearchBookView(model);
+		}
+		else if (viewName.equals("SearchPatronView") == true)
+		{
+			return new SearchPatronView(model);
+		}
 		else
 			return null;
 	}

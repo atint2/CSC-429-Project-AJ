@@ -299,7 +299,7 @@ abstract public class Persistable
 			// verify the results
 			if (theResultSet == null)
 			{
-				System.err.println("Persistable.getQueriedState - Invalid result set from SQL statement!");
+				System.err.println("Persi0stable.getQueriedState - Invalid result set from SQL statement!");
 				return null;
 			}
 
