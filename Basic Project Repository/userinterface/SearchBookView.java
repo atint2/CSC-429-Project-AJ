@@ -31,7 +31,7 @@ import java.util.Properties;
 public class SearchBookView extends View {
 
     // GUI components
-    protected TextField title;
+    protected TextField bookTitle;
 
     protected Button submitButton;
     protected Button doneButton;
@@ -44,6 +44,7 @@ public class SearchBookView extends View {
     public SearchBookView(IModel book) {
         super(book, "SearchBookView");
 
+        System.out.println("In constructor");
         // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
@@ -84,6 +85,58 @@ public class SearchBookView extends View {
     private VBox createFormContent() {
         VBox vbox = new VBox(10);
 
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Font myFont = Font.font("Garamond", FontWeight.NORMAL, 15);
+
+        Text prompt = new Text("SEARCH BOOKS BY TITLE");
+        prompt.setWrappingWidth(400);
+        prompt.setFont(Font.font("Garamond", FontWeight.BOLD, 17));
+        prompt.setTextAlignment(TextAlignment.CENTER);
+        prompt.setFill(Color.BLACK);
+        grid.add(prompt, 0, 0, 2, 1);
+
+        Text bookTitleLabel = new Text(" Title : ");
+        bookTitleLabel.setFont(myFont);
+        bookTitleLabel.setWrappingWidth(150);
+        bookTitleLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(bookTitleLabel, 0, 1);
+
+        bookTitle = new TextField();
+        grid.add(bookTitle, 1, 1);
+
+        HBox doneCont = new HBox(10);
+        doneCont.setAlignment(Pos.BOTTOM_RIGHT);
+
+        submitButton = new Button("Submit");
+        submitButton.setFont(myFont);
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+                processAction(e);
+            }
+        });
+        doneCont.getChildren().add(submitButton);
+
+        doneButton = new Button("Done");
+        doneButton.setFont(myFont);
+        doneButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+                myModel.stateChangeRequest("Done", null);
+            }
+        });
+        doneCont.getChildren().add(doneButton);
+
+        vbox.getChildren().add(grid);
+        vbox.getChildren().add(doneCont);
+
         return vbox;
     }
 
@@ -94,7 +147,18 @@ public class SearchBookView extends View {
 
     //-------------------------------------------------------------
     public void processAction(Event evt) {
+        // DEBUG: System.out.println("SearchBookView.actionPerformed()");
 
+        clearErrorMessage();
+
+        String bookTitleEntered = bookTitle.getText();
+
+        if (bookTitleEntered == null || bookTitleEntered.length() == 0) {
+            displayErrorMessage("Please enter a book title!");
+            bookTitle.requestFocus();
+        } else {
+
+        }
     }
 
     //-------------------------------------------------------------

@@ -165,25 +165,23 @@ public class LibrarianView extends View {
     public void processAction(Event evt) {
         // DEBUG System.out.println("LibrarianView.actionPerformed()");
         clearErrorMessage();
+
+        Librarian myLibrarian = new Librarian();
         if (evt.getSource().toString().contains("INSERT NEW BOOK"))
         {
-            Librarian myLibrarian = new Librarian();
-
             myLibrarian.createNewBook();
         }
         else if (evt.getSource().toString().contains("INSERT NEW PATRON"))
         {
-            Librarian myLibrarian = new Librarian();
-
             myLibrarian.createNewPatron();
         }
         else if (evt.getSource().toString().contains("SEARCH BOOKS"))
         {
-
+            myLibrarian.updateState("SearchBook", null);
         }
         else if (evt.getSource().toString().contains("SEARCH PATRONS"))
         {
-
+            myLibrarian.updateState("SearchPatron", null);
         }
     }
 

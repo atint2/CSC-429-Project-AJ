@@ -83,6 +83,58 @@ public class SearchPatronView extends View {
     private VBox createFormContent() {
         VBox vbox = new VBox(10);
 
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Font myFont = Font.font("Garamond", FontWeight.NORMAL, 15);
+
+        Text prompt = new Text("SEARCH PATRONS BY ZIP CODE");
+        prompt.setWrappingWidth(400);
+        prompt.setFont(Font.font("Garamond", FontWeight.BOLD, 17));
+        prompt.setTextAlignment(TextAlignment.CENTER);
+        prompt.setFill(Color.BLACK);
+        grid.add(prompt, 0, 0, 2, 1);
+
+        Text zipLabel = new Text(" ZIP : ");
+        zipLabel.setFont(myFont);
+        zipLabel.setWrappingWidth(150);
+        zipLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(zipLabel, 0, 1);
+
+        zip = new TextField();
+        grid.add(zip, 1, 1);
+
+        HBox doneCont = new HBox(10);
+        doneCont.setAlignment(Pos.BOTTOM_RIGHT);
+
+        submitButton = new Button("Submit");
+        submitButton.setFont(myFont);
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+                processAction(e);
+            }
+        });
+        doneCont.getChildren().add(submitButton);
+
+        doneButton = new Button("Done");
+        doneButton.setFont(myFont);
+        doneButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+                myModel.stateChangeRequest("Done", null);
+            }
+        });
+        doneCont.getChildren().add(doneButton);
+
+        vbox.getChildren().add(grid);
+        vbox.getChildren().add(doneCont);
+
         return vbox;
     }
 
@@ -92,7 +144,18 @@ public class SearchPatronView extends View {
 
     //-------------------------------------------------------------
     public void processAction(Event evt) {
+        // DEBUG: System.out.println("SearchPatronView.actionPerformed()");
 
+        clearErrorMessage();
+
+        String zipEntered = zip.getText();
+
+        if (zipEntered == null || zipEntered.length() == 0) {
+            displayErrorMessage("Please enter a zip code!");
+            zip.requestFocus();
+        } else {
+
+        }
     }
 
     //-------------------------------------------------------------
