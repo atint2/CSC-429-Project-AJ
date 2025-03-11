@@ -116,14 +116,27 @@ public class Librarian implements IView, IModel
         stateChangeRequest(key, value);
     }
 
+    //----------------------------------------------------------
     public void createNewBook() {
         Book newBook = new Book();
         updateState("InsertBook", null);
     }
 
+    //----------------------------------------------------------
     public void createNewPatron() {
         Patron newPatron = new Patron();
         updateState("InsertPatron", null);
+    }
+
+    //----------------------------------------------------------
+    public void searchBooks(String bookTitle) throws InvalidPrimaryKeyException {
+        BookCollection bookCo = new BookCollection();
+        bookCo.findBooksWithTitleLike(bookTitle);
+    }
+
+    //----------------------------------------------------------
+    public void searchPatrons() {
+
     }
 
     //------------------------------------------------------------

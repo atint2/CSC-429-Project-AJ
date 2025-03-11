@@ -2,6 +2,7 @@ package userinterface;
 
 // system imports
 
+import exception.InvalidPrimaryKeyException;
 import impresario.IModel;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -20,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.Book;
+import model.Librarian;
 
 import java.util.Properties;
 
@@ -150,6 +152,7 @@ public class SearchBookView extends View {
         // DEBUG: System.out.println("SearchBookView.actionPerformed()");
 
         clearErrorMessage();
+        Librarian myLibrarian = new Librarian();
 
         String bookTitleEntered = bookTitle.getText();
 
@@ -157,7 +160,11 @@ public class SearchBookView extends View {
             displayErrorMessage("Please enter a book title!");
             bookTitle.requestFocus();
         } else {
-
+            try {
+                myLibrarian.searchBooks(bookTitleEntered);
+            } catch (InvalidPrimaryKeyException e) {
+                System.out.println("No books with title found");
+            }
         }
     }
 
