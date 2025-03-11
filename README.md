@@ -21,3 +21,5 @@ Before Tuesday next, do the following:
 9. Push changes to your branch
 10. Make a pull request from your branch into main
 
+Students worked on this over the first weekend in February and seem to have been pretty successfully done.
+
