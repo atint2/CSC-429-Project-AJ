@@ -46,7 +46,6 @@ public class SearchBookView extends View {
     public SearchBookView(IModel book) {
         super(book, "SearchBookView");
 
-        System.out.println("In constructor");
         // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
@@ -152,7 +151,6 @@ public class SearchBookView extends View {
         // DEBUG: System.out.println("SearchBookView.actionPerformed()");
 
         clearErrorMessage();
-        Librarian myLibrarian = new Librarian();
 
         String bookTitleEntered = bookTitle.getText();
 
@@ -160,11 +158,7 @@ public class SearchBookView extends View {
             displayErrorMessage("Please enter a book title!");
             bookTitle.requestFocus();
         } else {
-            try {
-                myLibrarian.searchBooks(bookTitleEntered);
-            } catch (InvalidPrimaryKeyException e) {
-                System.out.println("No books with title found");
-            }
+            myModel.stateChangeRequest("SearchBooksWithTitle", bookTitleEntered);
         }
     }
 

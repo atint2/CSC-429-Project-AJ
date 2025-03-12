@@ -190,6 +190,22 @@ public class Book extends EntityBase implements IView {
     //-----------------------------------------------------------------------------------
     public void display() { System.out.println(toString()); }
 
+    /**
+     * This method is needed solely to enable the Book information to be displayable in a table
+     *
+     */
+    //--------------------------------------------------------------------------
+    public Vector<String> getEntryListView()
+    {
+        Vector<String> v = new Vector<String>();
+
+        v.addElement(persistentState.getProperty("bookTitle"));
+        v.addElement(persistentState.getProperty("author"));
+        v.addElement(persistentState.getProperty("pubYear"));
+
+        return v;
+    }
+
     //-----------------------------------------------------------------------------------
     protected void initializeSchema(String tableName) {
         if (mySchema == null) {

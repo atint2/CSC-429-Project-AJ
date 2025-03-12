@@ -102,6 +102,18 @@ public class Librarian implements IView, IModel
             createAndShowSearchBookView();
         } else if (key.equals("SearchPatron") == true) {
             createAndShowSearchPatronView();
+        } else if (key.equals("Back") == true) {
+            myViews.remove("BookCollectionView");
+
+            createAndShowSearchBookView();
+        } else if (key.equals("SearchBooksWithTitle") == true) {
+            try {
+                searchBooks(value.toString());
+            } catch (InvalidPrimaryKeyException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (key.equals("PatronCollectionView") == true) {
+            createAndShowPatronCollectionView();
         }
 
         myRegistry.updateSubscribers(key, this);
@@ -132,11 +144,14 @@ public class Librarian implements IView, IModel
     public void searchBooks(String bookTitle) throws InvalidPrimaryKeyException {
         BookCollection bookCo = new BookCollection();
         bookCo.findBooksWithTitleLike(bookTitle);
+        bookCo.createAndShowView();
     }
 
     //----------------------------------------------------------
-    public void searchPatrons() {
-
+    public void searchPatrons(String zip) throws InvalidPrimaryKeyException {
+        PatronCollection patronCo = new PatronCollection();
+        patronCo.findPatronsAtZipCode(zip);
+        updateState("PatronCollectionView", null);
     }
 
     //------------------------------------------------------------
@@ -184,6 +199,20 @@ public class Librarian implements IView, IModel
         swapToView(currentScene);
     }
 
+    /*
+    //------------------------------------------------------------
+    private void createAndShowBookCollectionView() {
+        // create our initial view
+        View newView = ViewFactory.createView("BookCollectionView", this); // USE VIEW FACTORY
+        Scene currentScene = new Scene(newView);
+        myViews.put("BookCollectionView", currentScene);
+
+        // make the view visible by installing it into the frame
+        swapToView(currentScene);
+    }
+
+     */
+
     //------------------------------------------------------------
     private void createAndShowSearchPatronView() {
         Scene currentScene = (Scene) myViews.get("SearchPatronView");
@@ -194,6 +223,17 @@ public class Librarian implements IView, IModel
             currentScene = new Scene(newView);
             myViews.put("SearchPatronView", currentScene);
         }
+
+        // make the view visible by installing it into the frame
+        swapToView(currentScene);
+    }
+
+    //------------------------------------------------------------
+    private void createAndShowPatronCollectionView() {
+        // create our initial view
+        View newView = ViewFactory.createView("PatronCollectionView", this); // USE VIEW FACTORY
+        Scene currentScene = new Scene(newView);
+        myViews.put("PatronCollectionView", currentScene);
 
         // make the view visible by installing it into the frame
         swapToView(currentScene);

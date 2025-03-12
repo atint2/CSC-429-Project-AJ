@@ -1,6 +1,7 @@
 package userinterface;
 
 import impresario.IModel;
+import model.PatronCollection;
 
 //==============================================================================
 public class ViewFactory {
@@ -76,6 +77,13 @@ public class ViewFactory {
 		else if (viewName.equals("SearchPatronView") == true)
 		{
 			return new SearchPatronView(model);
+		} else if (viewName.equals("BookCollectionView") == true)
+		{
+			return new BookCollectionView(model);
+		} else if (viewName.equals("PatronCollectionView") == true)
+		{
+			//return new PatronCollectionView(model);
+			return null;
 		}
 		else
 			return null;
