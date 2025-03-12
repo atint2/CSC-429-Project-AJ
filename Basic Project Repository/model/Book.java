@@ -199,9 +199,11 @@ public class Book extends EntityBase implements IView {
     {
         Vector<String> v = new Vector<String>();
 
-        v.addElement(persistentState.getProperty("bookTitle"));
+        v.addElement(persistentState.getProperty("bookId"));
         v.addElement(persistentState.getProperty("author"));
+        v.addElement(persistentState.getProperty("bookTitle"));
         v.addElement(persistentState.getProperty("pubYear"));
+        v.addElement(persistentState.getProperty("status"));
 
         return v;
     }

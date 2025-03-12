@@ -137,31 +137,41 @@ public class BookCollectionView extends View {
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         Text prompt = new Text("LIST OF BOOKS");
-        prompt.setWrappingWidth(350);
+        prompt.setWrappingWidth(400);
+        prompt.setFont(Font.font("Garamond", FontWeight.BOLD, 17));
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
         tableOfBooks = new TableView<BookTableModel>();
-        tableOfBooks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        TableColumn bookTitleColumn = new TableColumn("Book Title") ;
-        bookTitleColumn.setMinWidth(100);
-        bookTitleColumn.setCellValueFactory(
-                new PropertyValueFactory<BookTableModel, String>("bookTitle"));
+        TableColumn bookIdColumn = new TableColumn("BookId") ;
+        bookIdColumn.setMinWidth(75);
+        bookIdColumn.setCellValueFactory(
+                new PropertyValueFactory<BookTableModel, String>("bookId"));
 
         TableColumn authorColumn = new TableColumn("Author") ;
-        authorColumn.setMinWidth(100);
+        authorColumn.setMinWidth(90);
         authorColumn.setCellValueFactory(
                 new PropertyValueFactory<BookTableModel, String>("author"));
+
+        TableColumn bookTitleColumn = new TableColumn("Title") ;
+        bookTitleColumn.setMinWidth(90);
+        bookTitleColumn.setCellValueFactory(
+                new PropertyValueFactory<BookTableModel, String>("bookTitle"));
 
         TableColumn pubYearColumn = new TableColumn("Publication Year") ;
         pubYearColumn.setMinWidth(100);
         pubYearColumn.setCellValueFactory(
                 new PropertyValueFactory<BookTableModel, String>("pubYear"));
 
-        tableOfBooks.getColumns().addAll(bookTitleColumn,
-                authorColumn, pubYearColumn);
+        TableColumn statusColumn = new TableColumn("Status") ;
+        statusColumn.setMinWidth(90);
+        statusColumn.setCellValueFactory(
+                new PropertyValueFactory<BookTableModel, String>("status"));
+
+        tableOfBooks.getColumns().addAll(bookIdColumn, authorColumn,
+                bookTitleColumn, pubYearColumn, statusColumn);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setPrefSize(115, 150);
