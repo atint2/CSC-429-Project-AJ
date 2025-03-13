@@ -154,7 +154,7 @@ public class SearchPatronView extends View {
             displayErrorMessage("Please enter a zip code!");
             zip.requestFocus();
         } else {
-
+            myModel.stateChangeRequest("SearchPatronsWithZip", zipEntered);
         }
     }
 

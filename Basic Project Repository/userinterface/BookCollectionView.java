@@ -1,27 +1,21 @@
 package userinterface;
 
 // system imports
-import javafx.beans.property.SimpleStringProperty;
+
+import impresario.IModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -30,17 +24,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
-
-import java.util.Vector;
-import java.util.Enumeration;
-
-// project imports
-import impresario.IModel;
-import model.Account;
-import model.AccountCollection;
 import model.Book;
 import model.BookCollection;
+import model.Librarian;
+
+import java.util.Enumeration;
+import java.util.Vector;
 
 public class BookCollectionView extends View {
     protected TableView<BookTableModel> tableOfBooks;
@@ -48,7 +37,6 @@ public class BookCollectionView extends View {
     protected Button backButton;
 
     protected MessageView statusLog;
-
 
     //--------------------------------------------------------------------------
     public BookCollectionView(IModel wsc)
@@ -85,7 +73,6 @@ public class BookCollectionView extends View {
         try
         {
             BookCollection bookCollection = (BookCollection)myModel.getState("BookCollection");
-            System.out.println(bookCollection);
             Vector entryList = (Vector)bookCollection.getState("Books");
             Enumeration entries = entryList.elements();
 
@@ -100,7 +87,11 @@ public class BookCollectionView extends View {
 
             }
 
-            tableOfBooks.setItems(tableData);
+            SortedList<BookTableModel> sortedData = new SortedList<>(tableData);
+            sortedData.setComparator((b1, b2) -> b1.getAuthor().compareTo(b2.getAuthor()));  // Comparator based on author
+
+            // Set the sorted list to the table
+            tableOfBooks.setItems(sortedData);
         }
         catch (Exception e) {//SQLException e) {
             // Need to handle this exception
@@ -130,11 +121,17 @@ public class BookCollectionView extends View {
     {
         VBox vbox = new VBox(10);
 
+        // Set preferred size for the container
+        vbox.setPrefWidth(800);  // Set preferred width of the VBox container
+        vbox.setPrefHeight(300); // Set preferred height of the VBox container
+
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
+
+        Font myFont = Font.font("Garamond", FontWeight.NORMAL, 15);
 
         Text prompt = new Text("LIST OF BOOKS");
         prompt.setWrappingWidth(400);
@@ -156,7 +153,7 @@ public class BookCollectionView extends View {
                 new PropertyValueFactory<BookTableModel, String>("author"));
 
         TableColumn bookTitleColumn = new TableColumn("Title") ;
-        bookTitleColumn.setMinWidth(90);
+        bookTitleColumn.setMinWidth(150);
         bookTitleColumn.setCellValueFactory(
                 new PropertyValueFactory<BookTableModel, String>("bookTitle"));
 
@@ -170,29 +167,36 @@ public class BookCollectionView extends View {
         statusColumn.setCellValueFactory(
                 new PropertyValueFactory<BookTableModel, String>("status"));
 
+        tableOfBooks.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tableOfBooks.getColumns().addAll(bookIdColumn, authorColumn,
                 bookTitleColumn, pubYearColumn, statusColumn);
 
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(115, 150);
+        scrollPane.setPrefSize(150, 150);
+        scrollPane.setFitToHeight(true);  // Allow the content to fit the height of the ScrollPane
+        scrollPane.setFitToWidth(true);   // Allow the content to fit the width of the ScrollPane
         scrollPane.setContent(tableOfBooks);
 
+        Librarian myLibrarian = new Librarian();
+
         doneButton = new Button("Done");
+        doneButton.setFont(myFont);
         doneButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("Done", null);
+                myLibrarian.stateChangeRequest("Done", null);
             }
         });
 
         backButton = new Button("Back");
+        backButton.setFont(myFont);
         backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("Back", null);
+                myLibrarian.stateChangeRequest("SearchBook", null);
             }
         });
 

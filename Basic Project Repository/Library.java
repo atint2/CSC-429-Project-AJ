@@ -54,7 +54,6 @@ public class Library extends Application
 		exc.printStackTrace();
 	   }
 
-
   	   WindowPosition.placeCenter(mainStage);
 
            mainStage.show();

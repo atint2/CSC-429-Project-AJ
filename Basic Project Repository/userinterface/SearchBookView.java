@@ -2,7 +2,6 @@ package userinterface;
 
 // system imports
 
-import exception.InvalidPrimaryKeyException;
 import impresario.IModel;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -20,10 +19,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import model.Book;
-import model.Librarian;
-
-import java.util.Properties;
 
 /**
  * The class containing the SearchBook View  for the Library application

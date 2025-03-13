@@ -93,8 +93,6 @@ public class Librarian implements IView, IModel
         if (key.equals("InsertBook") == true) {
             createAndShowInsertBookView();
         } else if (key.equals("Done") == true) {
-            myViews.remove("BookView");
-
             createAndShowLibrarianView();
         } else if (key.equals("InsertPatron") == true) {
             createAndShowInsertPatronView();
@@ -102,18 +100,18 @@ public class Librarian implements IView, IModel
             createAndShowSearchBookView();
         } else if (key.equals("SearchPatron") == true) {
             createAndShowSearchPatronView();
-        } else if (key.equals("Back") == true) {
-            myViews.remove("BookCollectionView");
-
-            createAndShowSearchBookView();
         } else if (key.equals("SearchBooksWithTitle") == true) {
             try {
                 searchBooks(value.toString());
             } catch (InvalidPrimaryKeyException e) {
                 throw new RuntimeException(e);
             }
-        } else if (key.equals("PatronCollectionView") == true) {
-            createAndShowPatronCollectionView();
+        } else if (key.equals("SearchPatronsWithZip") == true) {
+            try {
+                searchPatrons(value.toString());
+            } catch (InvalidPrimaryKeyException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         myRegistry.updateSubscribers(key, this);
@@ -151,7 +149,7 @@ public class Librarian implements IView, IModel
     public void searchPatrons(String zip) throws InvalidPrimaryKeyException {
         PatronCollection patronCo = new PatronCollection();
         patronCo.findPatronsAtZipCode(zip);
-        updateState("PatronCollectionView", null);
+        patronCo.createAndShowView();
     }
 
     //------------------------------------------------------------
@@ -187,7 +185,6 @@ public class Librarian implements IView, IModel
     //------------------------------------------------------------
     private void createAndShowSearchBookView() {
         Scene currentScene = (Scene) myViews.get("SearchBookView");
-
         if (currentScene == null) {
             // create our initial view
             View newView = ViewFactory.createView("SearchBookView", this); // USE VIEW FACTORY
@@ -199,20 +196,6 @@ public class Librarian implements IView, IModel
         swapToView(currentScene);
     }
 
-    /*
-    //------------------------------------------------------------
-    private void createAndShowBookCollectionView() {
-        // create our initial view
-        View newView = ViewFactory.createView("BookCollectionView", this); // USE VIEW FACTORY
-        Scene currentScene = new Scene(newView);
-        myViews.put("BookCollectionView", currentScene);
-
-        // make the view visible by installing it into the frame
-        swapToView(currentScene);
-    }
-
-     */
-
     //------------------------------------------------------------
     private void createAndShowSearchPatronView() {
         Scene currentScene = (Scene) myViews.get("SearchPatronView");
@@ -223,17 +206,6 @@ public class Librarian implements IView, IModel
             currentScene = new Scene(newView);
             myViews.put("SearchPatronView", currentScene);
         }
-
-        // make the view visible by installing it into the frame
-        swapToView(currentScene);
-    }
-
-    //------------------------------------------------------------
-    private void createAndShowPatronCollectionView() {
-        // create our initial view
-        View newView = ViewFactory.createView("PatronCollectionView", this); // USE VIEW FACTORY
-        Scene currentScene = new Scene(newView);
-        myViews.put("PatronCollectionView", currentScene);
 
         // make the view visible by installing it into the frame
         swapToView(currentScene);

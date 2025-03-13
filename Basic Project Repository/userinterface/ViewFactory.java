@@ -82,8 +82,7 @@ public class ViewFactory {
 			return new BookCollectionView(model);
 		} else if (viewName.equals("PatronCollectionView") == true)
 		{
-			//return new PatronCollectionView(model);
-			return null;
+			return new PatronCollectionView(model);
 		}
 		else
 			return null;
